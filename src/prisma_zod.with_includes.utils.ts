@@ -9,12 +9,9 @@ export function with_includes(
 	const [name_schema] = obj_first_property(schemaObj)
 	const data = get_related_shape(schemas, name_schema)
 	let new_schema = data.core_shape
-	Object.entries(includes).map(([key, el]) => {
+	Object.entries(includes).forEach(([key, el]) => {
 		if (!data.simple_related_zod_schema.hasOwnProperty(key)) return
-		const [name_schema1] = obj_first_property(data.simple_related_zod_schema[key]?.shape) as [
-			any,
-			any
-		]
+		const [name_schema1] = obj_first_property(data.simple_related_zod_schema[key]?.shape)
 		if (typeof el === 'boolean') {
 			new_schema[key] = data.simple_related_zod_schema[key].array
 				? schemas[name_schema1].array()
