@@ -23,7 +23,9 @@ export const useModelNames = ({ modelCase, modelSuffix, relationModel }: Config)
 			name: string | DMMF.SchemaEnum | DMMF.OutputType | DMMF.SchemaArg
 		) =>
 			formatModelName(
-				relationModel === 'default' ? `Simple${name.toString()}` : `SimpleRelated${name.toString()}`
+				relationModel === 'default'
+					? `Simple${name.toString()}`
+					: `SimpleRelated${name.toString()}`
 			),
 	}
 }
