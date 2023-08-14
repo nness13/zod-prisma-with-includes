@@ -1,4 +1,4 @@
-import z, { ZodLazy, ZodTypeAny } from 'zod'
+import z from 'zod'
 import _ from 'lodash'
 
 export function with_includes(
@@ -30,18 +30,17 @@ export function with_includes(
 const obj_first_property = (obj: Record<any, any>) => {
 	const obj_keys = Object.keys(obj)
 	const name = obj_keys.length === 1 ? obj_keys[0] : null
-	if (!name) throw new Error(`schemaObj не може бути пустим обєктом`)
+	if (!name) throw new Error(`schemaObj must contain one property`)
 	return [name, obj[name]]
 }
 
-const get_related_shape = (schemas: any, name_schema: any) => {
+const get_related_shape = (schemas: Record<any, any>, name_schema: string) => {
 	const core_zod_schema = schemas[name_schema]
-	type core_zod_shape_type = ReturnType<typeof core_zod_schema._def.shape>
-	const core_zod_shape = core_zod_schema._def.shape() as core_zod_shape_type
+	const core_zod_shape = core_zod_schema._def.shape()
 	const core_zod_schema_keys = Object.keys(core_zod_shape)
-	const related_zod_schema = schemas[`Related${name_schema}`] as ZodLazy<ZodTypeAny>
-	const simple_related_zod_schema = schemas[`SimpleRelated${name_schema}`] as any
-	const full_shape = related_zod_schema._def.getter()._def.shape() as Record<any, any>
+	const related_zod_schema = schemas[`Related${name_schema}`]
+	const simple_related_zod_schema = schemas[`SimpleRelated${name_schema}`]
+	const full_shape = related_zod_schema._def.getter()._def.shape()
 	const core_shape = _.pick(full_shape, core_zod_schema_keys)
 	const related_shape = _.omit(full_shape, core_zod_schema_keys)
 	return {
