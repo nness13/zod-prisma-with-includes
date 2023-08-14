@@ -6,6 +6,7 @@ import { SemicolonPreference } from 'typescript'
 import { configSchema, PrismaOptions } from './config'
 import { populateModelFile, generateBarrelFile } from './generator'
 import { Project } from 'ts-morph'
+export {with_includes} from './module'
 
 generatorHandler({
 	onManifest() {
