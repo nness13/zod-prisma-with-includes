@@ -9,14 +9,20 @@ export function with_includes(
 	const [name_schema] = obj_first_property(schemaObj)
 	const data = get_related_shape(schemas, name_schema)
 	let new_schema = data.core_shape
+
+	// Run every relation dependency
 	Object.entries(includes).forEach(([key, el]) => {
 		if (!data.simple_related_zod_schema.hasOwnProperty(key)) return
+
+		// If simple relation schema exists in schemas then we get name schema in database
 		const [name_schema1] = obj_first_property(data.simple_related_zod_schema[key]?.shape)
+
+		// If you only need to connect a dependency
 		if (typeof el === 'boolean') {
 			new_schema[key] = data.simple_related_zod_schema[key].array
 				? schemas[name_schema1].array()
-				: schemas[name_schema1]
-		} else if (typeof el === 'object') {
+				: schemas[name_schema1].optional()
+		} else if (typeof el === 'object') { // If you need to connect dependencies within a dependency
 			new_schema[key] = with_includes(
 				schemas,
 				{ [name_schema1]: schemas[name_schema1] },
