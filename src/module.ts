@@ -1,7 +1,6 @@
 import { z } from 'zod'
 import _ from 'lodash'
 
-
 export function with_includes(
 	schemas: any,
 	schemaObj: Record<any, any>,
@@ -29,15 +28,15 @@ export function with_includes(
 			// If you need to connect dependencies within a dependency
 			new_schema[key] = data.simple_related_zod_schema[key].array
 				? with_includes(
-					schemas,
-					{ [name_schema1]: schemas[name_schema1] },
-					includes[key].include
-				).array()
+						schemas,
+						{ [name_schema1]: schemas[name_schema1] },
+						includes[key].include
+				  ).array()
 				: with_includes(
-					schemas,
-					{ [name_schema1]: schemas[name_schema1] },
-					includes[key].include
-				).optional()
+						schemas,
+						{ [name_schema1]: schemas[name_schema1] },
+						includes[key].include
+				  ).optional()
 		}
 	})
 	return z.object(new_schema)
