@@ -1,5 +1,6 @@
-import z from 'zod'
+import { z } from 'zod'
 import _ from 'lodash'
+
 
 export function with_includes(
 	schemas: any,
@@ -17,17 +18,26 @@ export function with_includes(
 		// If simple relation schema exists in schemas then we get name schema in database
 		const [name_schema1] = obj_first_property(data.simple_related_zod_schema[key]?.shape)
 
+		// console.log(key, typeof el)
 		// If you only need to connect a dependency
 		if (typeof el === 'boolean') {
+			// console.log(data.simple_related_zod_schema, key, data.simple_related_zod_schema[key].array)
 			new_schema[key] = data.simple_related_zod_schema[key].array
 				? schemas[name_schema1].array()
 				: schemas[name_schema1].optional()
-		} else if (typeof el === 'object') { // If you need to connect dependencies within a dependency
-			new_schema[key] = with_includes(
-				schemas,
-				{ [name_schema1]: schemas[name_schema1] },
-				includes[key].include
-			)
+		} else if (typeof el === 'object') {
+			// If you need to connect dependencies within a dependency
+			new_schema[key] = data.simple_related_zod_schema[key].array
+				? with_includes(
+					schemas,
+					{ [name_schema1]: schemas[name_schema1] },
+					includes[key].include
+				).array()
+				: with_includes(
+					schemas,
+					{ [name_schema1]: schemas[name_schema1] },
+					includes[key].include
+				).optional()
 		}
 	})
 	return z.object(new_schema)
