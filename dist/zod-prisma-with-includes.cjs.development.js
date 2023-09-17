@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var generatorHelper = require('@prisma/generator-helper');
 var typescript = require('typescript');
-var z = require('zod');
+var zod = require('zod');
 var path = require('path');
 var tsMorph = require('ts-morph');
 var parenthesis = require('parenthesis');
@@ -12,19 +12,18 @@ var _ = require('lodash');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var z__default = /*#__PURE__*/_interopDefaultLegacy(z);
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
 var ___default = /*#__PURE__*/_interopDefaultLegacy(_);
 
 var version = "0.5.4";
 
-const configBoolean = /*#__PURE__*/z.z.enum(['true', 'false']).transform(arg => JSON.parse(arg));
-const configSchema = /*#__PURE__*/z.z.object({
-  relationModel: /*#__PURE__*/configBoolean.default('true').or( /*#__PURE__*/z.z.literal('default')),
-  modelSuffix: /*#__PURE__*/z.z.string().default('Model'),
-  modelCase: /*#__PURE__*/z.z.enum(['PascalCase', 'camelCase']).default('PascalCase'),
+const configBoolean = /*#__PURE__*/zod.z.enum(['true', 'false']).transform(arg => JSON.parse(arg));
+const configSchema = /*#__PURE__*/zod.z.object({
+  relationModel: /*#__PURE__*/configBoolean.default('true').or( /*#__PURE__*/zod.z.literal('default')),
+  modelSuffix: /*#__PURE__*/zod.z.string().default('Model'),
+  modelCase: /*#__PURE__*/zod.z.enum(['PascalCase', 'camelCase']).default('PascalCase'),
   useDecimalJs: /*#__PURE__*/configBoolean.default('false'),
-  imports: /*#__PURE__*/z.z.string().optional(),
+  imports: /*#__PURE__*/zod.z.string().optional(),
   prismaJsonNullability: /*#__PURE__*/configBoolean.default('true')
 });
 
@@ -294,24 +293,32 @@ function with_includes(schemas, schemaObj, includes) {
   const [name_schema] = obj_first_property(schemaObj);
   const data = get_related_shape(schemas, name_schema);
   let new_schema = data.core_shape;
+  // Run every relation dependency
   Object.entries(includes).forEach(([key, el]) => {
     var _data$simple_related_;
     if (!data.simple_related_zod_schema.hasOwnProperty(key)) return;
+    // If simple relation schema exists in schemas then we get name schema in database
     const [name_schema1] = obj_first_property((_data$simple_related_ = data.simple_related_zod_schema[key]) == null ? void 0 : _data$simple_related_.shape);
+    // console.log(key, typeof el)
+    // If you only need to connect a dependency
     if (typeof el === 'boolean') {
-      new_schema[key] = data.simple_related_zod_schema[key].array ? schemas[name_schema1].array() : schemas[name_schema1];
+      // console.log(data.simple_related_zod_schema, key, data.simple_related_zod_schema[key].array)
+      new_schema[key] = data.simple_related_zod_schema[key].array ? schemas[name_schema1].array() : schemas[name_schema1].optional();
     } else if (typeof el === 'object') {
-      new_schema[key] = with_includes(schemas, {
+      // If you need to connect dependencies within a dependency
+      new_schema[key] = data.simple_related_zod_schema[key].array ? with_includes(schemas, {
         [name_schema1]: schemas[name_schema1]
-      }, includes[key].include);
+      }, includes[key].include).array() : with_includes(schemas, {
+        [name_schema1]: schemas[name_schema1]
+      }, includes[key].include).optional();
     }
   });
-  return z__default["default"].object(new_schema);
+  return zod.z.object(new_schema);
 }
 const obj_first_property = obj => {
   const obj_keys = Object.keys(obj);
   const name = obj_keys.length === 1 ? obj_keys[0] : null;
-  if (!name) throw new Error(`schemaObj не може бути пустим обєктом`);
+  if (!name) throw new Error(`schemaObj must contain one property`);
   return [name, obj[name]];
 };
 const get_related_shape = (schemas, name_schema) => {
