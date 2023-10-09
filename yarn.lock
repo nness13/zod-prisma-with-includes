@@ -1315,6 +1315,15 @@
     debug "4.3.4"
     strip-ansi "6.0.1"
 
+"@prisma/debug@5.4.1":
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/@prisma/debug/-/debug-5.4.1.tgz#45fe1d28e8167ac0ac897fb16c70cdbb748da8dd"
+  integrity sha512-JJkDz43hVj5D/deu6QOlmtTnrTM3OaMQ7RqZVDo+7bpEy/s4W2JkAbOVsHZCCjs0SMMMPOfLlrpG5dREdoqAeQ==
+  dependencies:
+    "@types/debug" "4.1.9"
+    debug "4.3.4"
+    strip-ansi "6.0.1"
+
 "@prisma/engine-core@4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@prisma/engine-core/-/engine-core-4.0.0.tgz#1fc742658a1727841a9b136fa9560eb11e2ce3a8"
@@ -1371,7 +1380,7 @@
     temp-dir "2.0.0"
     tempy "1.0.1"
 
-"@prisma/generator-helper@4.0.0", "@prisma/generator-helper@~4.0.0":
+"@prisma/generator-helper@4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@prisma/generator-helper/-/generator-helper-4.0.0.tgz#a642ccfe59c1613aa77198a3680f88503f0a55fe"
   integrity sha512-BuyfP1T+lGmvLsysKlFN12yNbVIJbtCm0lb+feIjCYwtFYVj3/+09wezLGzlaYPz+nnwqFohZrojcrBF0oBW8g==
@@ -1380,6 +1389,16 @@
     "@types/cross-spawn" "6.0.2"
     chalk "4.1.2"
     cross-spawn "7.0.3"
+
+"@prisma/generator-helper@~5.4.1":
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/@prisma/generator-helper/-/generator-helper-5.4.1.tgz#31473b48dd31949dad107b956c02879bf4aeed5a"
+  integrity sha512-3zYQoBOU0BLPT02xPSRwQRcyjnSzNOPPWSKQINkOr5hid680ajaksV2eBbcmrNu2vltLpKpMgdTnlreUjkZ5tQ==
+  dependencies:
+    "@prisma/debug" "5.4.1"
+    "@types/cross-spawn" "6.0.3"
+    cross-spawn "7.0.3"
+    kleur "4.1.5"
 
 "@prisma/get-platform@3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11":
   version "3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11"
@@ -1619,10 +1638,24 @@
   dependencies:
     "@types/node" "*"
 
+"@types/cross-spawn@6.0.3":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@types/cross-spawn/-/cross-spawn-6.0.3.tgz#c743cb2608f55860ee9776d8c99135d6032c763c"
+  integrity sha512-BDAkU7WHHRHnvBf5z89lcvACsvkz/n7Tv+HyD/uW76O29HoH1Tk/W6iQrepaZVbisvlEek4ygwT8IW7ow9XLAA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/debug@4.1.7":
   version "4.1.7"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.7.tgz#7cc0ea761509124709b8b2d1090d8f6c17aadb82"
   integrity sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==
+  dependencies:
+    "@types/ms" "*"
+
+"@types/debug@4.1.9":
+  version "4.1.9"
+  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.9.tgz#906996938bc672aaf2fb8c0d3733ae1dda05b005"
+  integrity sha512-8Hz50m2eoS56ldRlepxSBa6PWEVCtzUo/92HgLc2qTMnotJNIm7xP+UZhyWoYsyOdd5dxZ+NZLb24rsKyFs2ow==
   dependencies:
     "@types/ms" "*"
 
@@ -4680,6 +4713,11 @@ jsonfile@^6.0.1:
     array.prototype.flat "^1.3.1"
     object.assign "^4.1.4"
     object.values "^1.1.6"
+
+kleur@4.1.5:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/kleur/-/kleur-4.1.5.tgz#95106101795f7050c6c650f350c683febddb1780"
+  integrity sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==
 
 kleur@^3.0.3:
   version "3.0.3"
